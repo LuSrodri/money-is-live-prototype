@@ -1,0 +1,191 @@
+```html
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money is Live</title>
+  <style>
+    /* Import das fontes Noto Sans Mono */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+
+    /* Reset e estilos base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Noto Sans Mono', sans-serif;
+      background: #000;
+    }
+
+    /* Background image container com zoom */
+    #bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 1s ease-in-out;
+      animation: zoomEffect 20s linear forwards;
+      z-index: 1;
+    }
+
+    /* Overlay para a manchete com backdrop escuro */
+    #news-overlay {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      z-index: 2;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 90%;
+      color: #fff;
+    }
+    #headline {
+      font-size: 2em;
+      line-height: 1.2;
+    }
+
+    /* Botão de unmute no canto superior direito */
+    #unmuteBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #000;
+      cursor: pointer;
+    }
+
+    /* Animação de zoom somente para a imagem de fundo */
+    @keyframes zoomEffect {
+      from {
+        transform: scale(1);
+      }
+      to {
+        transform: scale(1.1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="bg"></div>
+  <div id="news-overlay">
+    <h1 id="headline"></h1>
+  </div>
+  <button id="unmuteBtn">Unmute</button>
+  <audio id="audioPlayer"></audio>
+
+  <script>
+    // Objeto com as notícias
+    const noticias = {
+      "noticias": [
+        {
+          "manchete": "Primeiro cruzeiro para cães tem até mordomo pet",
+          "noticia_sintetizada": "Prepare-se para navegar com seu melhor amigo! Em novembro, zarpa da Flórida o primeiro cruzeiro temático para cães e seus tutores. A viagem, organizada por três empresas, oferece cabines com varanda, mordomos pet, spa, piqueniques e até 'estações de alívio' para os animais. Os preços variam de US$ 1.700 a US$ 3.550 por pessoa, mais US$ 1.500 por cachorro. Mas atenção: apenas cães pequenos, de até nove quilos, serão permitidos a bordo, após um processo de seleção. Uma experiência luxuosa e inédita para você e seu cão!",
+          "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/dogs-1-1300x731.jpg.webp",
+          "audio_path": "./audio/cruzeiro_caes.mp3"
+        },
+        {
+          "manchete": "Na ‘Fundação’ de Isaac Asimov, lições para CEOs",
+          "noticia_sintetizada": "A obra 'Fundação', de Isaac Asimov, ganha uma nova interpretação no mundo corporativo. A série da Apple TV+ apresenta paralelos entre o declínio de um império galáctico e os desafios enfrentados por CEOs. A importância do planejamento de longo prazo, a necessidade de adaptação, os perigos do excesso de controle e a importância da comunicação genuína com o mercado são algumas das lições que a obra oferece. Uma reflexão sobre poder, conhecimento e ciência, que convida a repensar as estratégias empresariais e moldar um futuro de sucesso.",
+          "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/filme-857x482.png.webp",
+          "audio_path": "./audio/fundacao_isaac_asimov.mp3"
+        },
+        {
+          "manchete": "Renner despenca com decepção na margem bruta, queda no lucro e bônus gordo",
+          "noticia_sintetizada": "A Lojas Renner amarga um dia de forte queda na Bolsa, com suas ações despencando 14%. O resultado do quarto trimestre decepcionou o mercado, com margem bruta menor do que o esperado e queda no lucro líquido. A cereja do bolo foi o pagamento de um bônus elevado aos executivos, que irritou parte dos investidores. A empresa, que busca retomar o crescimento com rentabilidade, enfrenta um cenário desafiador em 2025. Uma combinação de fatores que derrubou as ações da varejista e gerou dúvidas sobre o futuro da companhia.",
+          "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2023/08/renner-780x482.jpg.webp",
+          "audio_path": "./audio/lojas_renner_cai.mp3"
+        },
+        {
+          "manchete": "Iguatemi troca CEO, promove vp comercial e diz que nada muda",
+          "noticia_sintetizada": "O Iguatemi anuncia a sucessão de sua liderança. Cristina Betts deixa o cargo de CEO e Ciro Neto, VP Comercial, assume o comando da companhia. A transição, planejada nos últimos meses, visa dar continuidade à estratégia da empresa, focada em disciplina de execução e experiência do cliente. Após um ano de aquisições importantes, o Iguatemi busca consolidar seu portfólio e fortalecer sua atuação no mercado de shopping centers. Uma mudança que, segundo a empresa, não altera seus planos para o futuro.",
+          "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/shutterstock_1274655721-857x482.jpg.webp",
+          "audio_path": "./audio/iguatemi_novo_ceo.mp3"
+        },
+        {
+          "manchete": "DoJ investiga a UnitedHealth por suspeita de cobranças infladas",
+          "noticia_sintetizada": "A UnitedHealth, gigante do setor de saúde nos EUA, está sob investigação do Departamento de Justiça. A suspeita é de práticas fraudulentas no sistema Medicare Advantage, com cobranças infladas e registros de diagnósticos questionáveis. As autoridades apuram se a empresa teria incentivado médicos a produzirem diagnósticos que aumentassem os repasses do governo federal. A investigação, que corre em paralelo a um processo antitruste, pode ter um impacto significativo na reputação e nos resultados da UnitedHealth.",
+          "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/shutterstock_2183392595-857x482.jpg.webp",
+          "audio_path": "./audio/united_health_doj.mp3"
+        },
+        {
+          "manchete": "Por que o Véio da Havan está rindo à toa",
+          "noticia_sintetizada": "Luciano Hang, o 'Véio da Havan', tem motivos para comemorar. Em 2024, a Havan faturou quase R$ 16 bilhões, um crescimento de 22,2% em relação ao ano anterior. O lucro líquido disparou 82,5%, atingindo R$ 2,7 bilhões. A receita para o sucesso? Uma gestão mais focada na operação, a redução da inadimplência e os investimentos no exterior. Com 177 lojas espalhadas pelo Brasil, a Havan desafia as convenções do varejo e se consolida como um gigante do setor. Uma trajetória de sucesso que faz o Véio da Havan rir à toa.",
+          "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/veiodahavan-857x482.jpeg.webp",
+          "audio_path": "./audio/veio_havan_ri.mp3"
+        }
+      ]
+    };
+
+    let currentIndex = 0;
+    const bg = document.getElementById('bg');
+    const headlineElement = document.getElementById('headline');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const unmuteBtn = document.getElementById('unmuteBtn');
+
+    // Função para exibir uma notícia
+    function showNews(index) {
+      // Fade out da notícia atual
+      bg.style.opacity = 0;
+      
+      // Reinicia a animação de zoom na imagem de fundo
+      bg.style.animation = 'none';
+      void bg.offsetWidth;
+      bg.style.animation = 'zoomEffect 20s linear forwards';
+
+      // Seleciona a notícia atual
+      const news = noticias.noticias[index];
+      
+      // Atualiza a imagem de fundo e a manchete
+      bg.style.backgroundImage = `url('${news.url_img_noticia_banner}')`;
+      headlineElement.textContent = news.manchete;
+      
+      // Fade in da nova notícia
+      setTimeout(() => {
+        bg.style.opacity = 1;
+      }, 100);
+      
+      // Configura o áudio e tenta reproduzir imediatamente
+      audioPlayer.src = news.audio_path;
+      audioPlayer.play().catch(() => {
+        // Caso o play seja bloqueado, não faz nada
+      });
+      
+      // Ao término do áudio, espera 5 segundos e passa para a próxima notícia
+      audioPlayer.onended = function() {
+        setTimeout(() => {
+          bg.style.opacity = 0;
+          setTimeout(() => {
+            currentIndex = (currentIndex + 1) % noticias.noticias.length;
+            showNews(currentIndex);
+          }, 1000); // tempo do fade out
+        }, 5000); // espera de 5 segundos após o áudio
+      }
+    }
+
+    // Evento do botão Unmute para iniciar a reprodução e permitir o áudio
+    unmuteBtn.addEventListener('click', function() {
+      // Esconde o botão
+      this.style.display = 'none';
+      // Garante que o áudio não esteja mudo
+      audioPlayer.muted = false;
+      // Inicia o ciclo de notícias
+      showNews(currentIndex);
+    });
+  </script>
+</body>
+</html>
+```
