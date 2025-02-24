@@ -22,7 +22,65 @@
       background: #000;
     }
 
-    /* Background image container com zoom */
+    /* Start Screen */
+    #start-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      text-align: center;
+      color: #333;
+      padding: 20px;
+    }
+    #emoji-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-size: 5rem;
+      opacity: 0.1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+    }
+    .start-content {
+      z-index: 11;
+    }
+    #startBtn {
+      padding: 15px 30px;
+      font-size: 1.5em;
+      border: none;
+      border-radius: 8px;
+      background-color: #FFD700; /* amarelo */
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .start-footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      z-index: 11;
+      font-size: 1em;
+    }
+    .start-footer a {
+      color: #0000EE;
+      text-decoration: underline italic;
+      font-weight: bolder;
+    }
+
+    /* Background image container with zoom */
     #bg {
       position: fixed;
       top: 0;
@@ -36,13 +94,14 @@
       z-index: 1;
     }
 
-    /* Overlay para a manchete com backdrop escuro */
+    /* News overlay */
     #news-overlay {
       position: fixed;
       bottom: 30px;
       left: 30px;
       z-index: 2;
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba(0, 0, 0, 0.3); /* Mais difuso */
+      backdrop-filter: blur(5px);
       padding: 20px;
       border-radius: 8px;
       max-width: 90%;
@@ -53,19 +112,22 @@
       line-height: 1.2;
     }
 
-    /* Botão de unmute no canto superior direito */
-    #unmuteBtn {
+    /* Feedback element no canto superior */
+    #feedback {
       position: fixed;
       top: 20px;
       right: 20px;
       z-index: 3;
-      padding: 10px 20px;
-      font-size: 1em;
-      border: none;
-      border-radius: 4px;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: #b19cd9; /* roxo claro */
       color: #000;
-      cursor: pointer;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.9em;
+    }
+    #feedback a {
+      color: #0000EE;
+      text-decoration: underline italic;
+      font-weight: bolder;
     }
 
     /* Animação de zoom somente para a imagem de fundo */
@@ -80,11 +142,25 @@
   </style>
 </head>
 <body>
+  <!-- Tela de início -->
+  <div id="start-screen">
+    <div id="emoji-background">💰💵💸💰💵💸</div>
+    <div class="start-content">
+      <button id="startBtn">Começar a escutar</button>
+    </div>
+    <div class="start-footer">
+      <p>Money Is Live é um projeto com a iniciativa de facilitar o acesso as notícias do mercado financeiro e corporativo, de forma dinâmica, automatizada e em tempo real. Interessado? <a href="https://forms.gle/r2BmuDERMZM1z2Nh7" target="_blank">Saiba mais</a></p>
+    </div>
+  </div>
+
+  <!-- Exibição das notícias -->
   <div id="bg"></div>
   <div id="news-overlay">
     <h1 id="headline"></h1>
   </div>
-  <button id="unmuteBtn">Unmute</button>
+  <div id="feedback">
+    Gostou do protótipo? Se sim, demonstre o seu interesse <a href="https://forms.gle/r2BmuDERMZM1z2Nh7" target="_blank">aqui!</a>
+  </div>
   <audio id="audioPlayer"></audio>
 
   <script>
@@ -95,37 +171,37 @@
           "manchete": "Primeiro cruzeiro para cães tem até mordomo pet",
           "noticia_sintetizada": "Prepare-se para navegar com seu melhor amigo! Em novembro, zarpa da Flórida o primeiro cruzeiro temático para cães e seus tutores. A viagem, organizada por três empresas, oferece cabines com varanda, mordomos pet, spa, piqueniques e até 'estações de alívio' para os animais. Os preços variam de US$ 1.700 a US$ 3.550 por pessoa, mais US$ 1.500 por cachorro. Mas atenção: apenas cães pequenos, de até nove quilos, serão permitidos a bordo, após um processo de seleção. Uma experiência luxuosa e inédita para você e seu cão!",
           "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/dogs-1-1300x731.jpg.webp",
-          "audio_path": "./audio/cruzeiro_caes.mp3"
+          "audio_path": "/audio/cruzeiro_caes.mp3"
         },
         {
           "manchete": "Na ‘Fundação’ de Isaac Asimov, lições para CEOs",
           "noticia_sintetizada": "A obra 'Fundação', de Isaac Asimov, ganha uma nova interpretação no mundo corporativo. A série da Apple TV+ apresenta paralelos entre o declínio de um império galáctico e os desafios enfrentados por CEOs. A importância do planejamento de longo prazo, a necessidade de adaptação, os perigos do excesso de controle e a importância da comunicação genuína com o mercado são algumas das lições que a obra oferece. Uma reflexão sobre poder, conhecimento e ciência, que convida a repensar as estratégias empresariais e moldar um futuro de sucesso.",
           "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/filme-857x482.png.webp",
-          "audio_path": "./audio/fundacao_isaac_asimov.mp3"
+          "audio_path": "/audio/fundacao_isaac_asimov.mp3"
         },
         {
           "manchete": "Renner despenca com decepção na margem bruta, queda no lucro e bônus gordo",
           "noticia_sintetizada": "A Lojas Renner amarga um dia de forte queda na Bolsa, com suas ações despencando 14%. O resultado do quarto trimestre decepcionou o mercado, com margem bruta menor do que o esperado e queda no lucro líquido. A cereja do bolo foi o pagamento de um bônus elevado aos executivos, que irritou parte dos investidores. A empresa, que busca retomar o crescimento com rentabilidade, enfrenta um cenário desafiador em 2025. Uma combinação de fatores que derrubou as ações da varejista e gerou dúvidas sobre o futuro da companhia.",
           "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2023/08/renner-780x482.jpg.webp",
-          "audio_path": "./audio/lojas_renner_cai.mp3"
+          "audio_path": "/audio/lojas_renner_cai.mp3"
         },
         {
           "manchete": "Iguatemi troca CEO, promove vp comercial e diz que nada muda",
           "noticia_sintetizada": "O Iguatemi anuncia a sucessão de sua liderança. Cristina Betts deixa o cargo de CEO e Ciro Neto, VP Comercial, assume o comando da companhia. A transição, planejada nos últimos meses, visa dar continuidade à estratégia da empresa, focada em disciplina de execução e experiência do cliente. Após um ano de aquisições importantes, o Iguatemi busca consolidar seu portfólio e fortalecer sua atuação no mercado de shopping centers. Uma mudança que, segundo a empresa, não altera seus planos para o futuro.",
           "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/shutterstock_1274655721-857x482.jpg.webp",
-          "audio_path": "./audio/iguatemi_novo_ceo.mp3"
+          "audio_path": "/audio/iguatemi_novo_ceo.mp3"
         },
         {
           "manchete": "DoJ investiga a UnitedHealth por suspeita de cobranças infladas",
           "noticia_sintetizada": "A UnitedHealth, gigante do setor de saúde nos EUA, está sob investigação do Departamento de Justiça. A suspeita é de práticas fraudulentas no sistema Medicare Advantage, com cobranças infladas e registros de diagnósticos questionáveis. As autoridades apuram se a empresa teria incentivado médicos a produzirem diagnósticos que aumentassem os repasses do governo federal. A investigação, que corre em paralelo a um processo antitruste, pode ter um impacto significativo na reputação e nos resultados da UnitedHealth.",
           "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/shutterstock_2183392595-857x482.jpg.webp",
-          "audio_path": "./audio/united_health_doj.mp3"
+          "audio_path": "/audio/united_health_doj.mp3"
         },
         {
           "manchete": "Por que o Véio da Havan está rindo à toa",
           "noticia_sintetizada": "Luciano Hang, o 'Véio da Havan', tem motivos para comemorar. Em 2024, a Havan faturou quase R$ 16 bilhões, um crescimento de 22,2% em relação ao ano anterior. O lucro líquido disparou 82,5%, atingindo R$ 2,7 bilhões. A receita para o sucesso? Uma gestão mais focada na operação, a redução da inadimplência e os investimentos no exterior. Com 177 lojas espalhadas pelo Brasil, a Havan desafia as convenções do varejo e se consolida como um gigante do setor. Uma trajetória de sucesso que faz o Véio da Havan rir à toa.",
           "url_img_noticia_banner": "https://braziljournal.com/wp-content/uploads/2025/02/veiodahavan-857x482.jpeg.webp",
-          "audio_path": "./audio/veio_havan_ri.mp3"
+          "audio_path": "/audio/veio_havan_ri.mp3"
         }
       ]
     };
@@ -134,7 +210,6 @@
     const bg = document.getElementById('bg');
     const headlineElement = document.getElementById('headline');
     const audioPlayer = document.getElementById('audioPlayer');
-    const unmuteBtn = document.getElementById('unmuteBtn');
 
     // Função para exibir uma notícia
     function showNews(index) {
@@ -176,10 +251,12 @@
       }
     }
 
-    // Evento do botão Unmute para iniciar a reprodução e permitir o áudio
-    unmuteBtn.addEventListener('click', function() {
-      // Esconde o botão
-      this.style.display = 'none';
+    // Evento do botão Start para iniciar o ciclo de notícias
+    const startBtn = document.getElementById('startBtn');
+    startBtn.addEventListener('click', function() {
+      // Remove a tela de início
+      const startScreen = document.getElementById('start-screen');
+      startScreen.style.display = 'none';
       // Garante que o áudio não esteja mudo
       audioPlayer.muted = false;
       // Inicia o ciclo de notícias
